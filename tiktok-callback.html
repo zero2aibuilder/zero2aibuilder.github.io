@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok Authorization — Zero2AIBuilder Publisher</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;background:#0a0e1a;color:#e8ecf4;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center}
+.card{background:#11182b;border:1px solid #1e2c4d;border-radius:16px;padding:36px;max-width:560px;width:90%;text-align:center}
+h1{color:#2f9bff;font-size:22px;margin:0 0 12px}
+p{color:#c4ccdd;line-height:1.6}
+#code{background:#0a0e1a;border:1px dashed #2f9bff;border-radius:8px;padding:16px;font-family:monospace;font-size:15px;word-break:break-all;color:#fff;margin:16px 0;user-select:all}
+button{background:#2f9bff;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:16px;cursor:pointer}
+button:hover{background:#1f8ae8}
+.err{color:#ff6b6b}
+.small{color:#8a94a8;font-size:13px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Zero2AIBuilder Publisher</h1>
+<p id="msg">Reading the authorization result…</p>
+<div id="code" style="display:none"></div>
+<button id="copy" style="display:none">Copy code</button>
+<p class="small">After copying, paste the code back into your chat with Muse to finish connecting TikTok.</p>
+</div>
+<script>
+const q = new URLSearchParams(location.search);
+const code = q.get('code'), err = q.get('error'), desc = q.get('error_description');
+const msg = document.getElementById('msg'), box = document.getElementById('code'), btn = document.getElementById('copy');
+if (code) {
+  msg.textContent = 'Authorization successful. Copy this code:';
+  box.textContent = code; box.style.display = 'block'; btn.style.display = 'inline-block';
+  btn.onclick = () => { navigator.clipboard.writeText(code); btn.textContent = 'Copied!'; };
+} else if (err) {
+  msg.innerHTML = '<span class="err">Authorization failed: ' + err + (desc ? ' — ' + desc : '') + '</span><br>Please try connecting again.';
+} else {
+  msg.textContent = 'No authorization code found in this link. If you just authorized the app, please try the connection step again.';
+}
+</script>
+</body>
+</html>
